@@ -68,6 +68,11 @@
                         <!-- Arquillian Cube yaml processing is very hard to get working: just use json for now -->
                         <env.config.resource.name>server.json</env.config.resource.name>
                         <wait.for.service.list>hello-service</wait.for.service.list>
+
+                        <!-- Set up test environment manually -->
+                        <env.init.enabled>false</env.init.enabled>
+                        <namespace.use.existing>testns1</namespace.use.existing>
+                        
                     </systemPropertyVariables>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <additionalClasspathElements>

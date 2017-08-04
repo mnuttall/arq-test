@@ -28,6 +28,8 @@ public class ArqIT {
     Running mvn outside minikube, without @PortForward the injected URL is in the range http://10.0.0.48:80/
     which is not reachable from the host. So the test fails. @PortForward is essential for running the code 
     from a command line on a laptop. 
+
+    Test passes on minikube with @PortForward commented out. 
     */
 
     @Named("hello-service")
