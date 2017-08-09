@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rest-test
+  labels:
+    name: rest-pod 
+spec:
+  containers:
+  - name: restpod
+    image: arqtest
+    imagePullPolicy: IfNotPresent
+    ports: 
+    - containerPort: 9080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rest-service
+spec:
+  ports: 
+  - port: 9080
+  selector: 
+    name: rest-pod

@@ -4,7 +4,7 @@
     <groupId>arq-test</groupId>
 	<artifactId>arq-test</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<!--<packaging>war</packaging>-->
+	<packaging>war</packaging>
 	<name>arq-test</name>
 	<description>A basic Java test app with a Kubernetes test using Arquillian Cube</description>
 	<properties>
@@ -44,6 +44,14 @@
             <version>2.5.7</version>
         </dependency>
 
+        <!-- Dependencies for Java test application -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+            <version>7.0</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>
@@ -59,6 +67,16 @@
 			</plugin>
 
             <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>2.6</version>
+              <configuration>
+                  <failOnMissingWebXml>false</failOnMissingWebXml>
+                  <packagingExcludes>pom.xml</packagingExcludes>
+              </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
@@ -67,11 +85,11 @@
                         <arquillian.debug>true</arquillian.debug>
                         <!-- Arquillian Cube yaml processing is very hard to get working: just use json for now -->
                         <env.config.resource.name>server.json</env.config.resource.name>
-                        <wait.for.service.list>hello-service</wait.for.service.list>
+                        <wait.for.service.list>rest-service</wait.for.service.list>
 
                         <!-- Set up test environment manually -->
                         <env.init.enabled>false</env.init.enabled>
-                        <namespace.use.existing>testns1</namespace.use.existing>
+                        <namespace.use.existing>testns</namespace.use.existing>
                         
                     </systemPropertyVariables>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>

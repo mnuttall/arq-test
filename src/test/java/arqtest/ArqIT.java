@@ -3,10 +3,12 @@ package arqtest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.Exception;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 
 import org.junit.runner.RunWith;
 import org.arquillian.cube.kubernetes.annotations.Named;
@@ -32,27 +34,61 @@ public class ArqIT {
     Test passes on minikube with @PortForward commented out. 
     */
 
-    @Named("hello-service")
-    // @PortForward
+    // @Named("hello-service")
+    @Named("rest-service")
+    @PortForward
     @ArquillianResource
     URL url;
 
-    @Test
+    enum Method {GET, PUT, POST, DELETE};
+
+    /* 
+    // @Test
     public void testHelloService() throws Exception { 
-
         System.out.println ("Got injected URL " + ((url == null) ? "null" : url.toString()));
+        String response = getContent (url);
+        String result = response.toString();
+        System.out.println ("Got result " + result);
+        assertTrue ("Expected Hello, got " + result, result.contains("Hello"));
 
+    }
+    */
+
+    @Test
+    public void testPost() throws Exception { 
+        String target = url.toURI().toString() + "/rest";
+        URL targetURL = new URI(target).toURL();
+        String result = getContent(targetURL, Method.POST, "payload");
+
+        System.out.println ("testPost got result " + result);
+        assertTrue ("Expected payload", result.contains("payload"));
+        assertTrue ("Expected count", result.contains("count"));
+    }
+
+    private String getContent (URL url, Method method, String payload) throws IOException { 
         StringBuilder response = new StringBuilder();
         int retries = 5;
         while (response.toString().isEmpty() && retries > 0) { 
             try { 
-                URLConnection urlc = url.openConnection();
-                BufferedReader br = new BufferedReader (new InputStreamReader(urlc.getInputStream()));
+                Writer writer = null;
+                BufferedReader reader;
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("content-type", "text/plain");
+                urlc.setRequestMethod(method.toString());
+
+                if (method == Method.PUT || method == Method.POST) { 
+                    urlc.setDoOutput(true);
+                    writer = new OutputStreamWriter(urlc.getOutputStream());
+                    writer.write(payload);
+                    writer.flush();
+                }
+                reader = new BufferedReader (new InputStreamReader(urlc.getInputStream()));
                 String line;
-                while ((line = br.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     response.append (line + "\n");
                 }
-                br.close();
+                if (writer != null) writer.close();
+                reader.close();
             } catch (IOException iox) { 
                 if (retries <= 1) { 
                     throw iox;
@@ -64,10 +100,6 @@ public class ArqIT {
                 retries--;
             }
         }
-
-        String result = response.toString();
-        System.out.println ("Got result " + result);
-        assertTrue ("Expected Hello, got " + result, result.contains("Hello"));
-
+        return response.toString();
     }
 }
