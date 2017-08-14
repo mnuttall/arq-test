@@ -34,29 +34,34 @@ public class ArqIT {
     Test passes on minikube with @PortForward commented out. 
     */
 
-    // @Named("hello-service")
-    @Named("rest-service")
+    @Named("hello-service")
     @PortForward
     @ArquillianResource
     URL url;
 
     enum Method {GET, PUT, POST, DELETE};
 
-    /* 
-    // @Test
+    @Test
     public void testHelloService() throws Exception { 
         System.out.println ("Got injected URL " + ((url == null) ? "null" : url.toString()));
-        String response = getContent (url);
+        String response = getContent (url, Method.GET, null);
         String result = response.toString();
         System.out.println ("Got result " + result);
         assertTrue ("Expected Hello, got " + result, result.contains("Hello"));
 
     }
-    */
+    
+/* 
+This next test is relevant to a second problem relating to JAX-RS. Not relevant to @PortForward
+
+    @Named("rest-service")
+    @PortForward
+    @ArquillianResource
+    URL resturl;
 
     @Test
     public void testPost() throws Exception { 
-        String target = url.toURI().toString() + "/rest";
+        String target = resturl.toURI().toString() + "/rest";
         URL targetURL = new URI(target).toURL();
         String result = getContent(targetURL, Method.POST, "payload");
 
@@ -64,8 +69,9 @@ public class ArqIT {
         assertTrue ("Expected payload", result.contains("payload"));
         assertTrue ("Expected count", result.contains("count"));
     }
+*/
 
-    private String getContent (URL url, Method method, String payload) throws IOException { 
+    private String getContent (URL url, Method method, String payload ) throws IOException { 
         StringBuilder response = new StringBuilder();
         int retries = 5;
         while (response.toString().isEmpty() && retries > 0) { 
