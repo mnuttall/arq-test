@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
-import org.junit.runner.RunWith;
 import org.arquillian.cube.kubernetes.annotations.Named;
 import org.arquillian.cube.kubernetes.annotations.PortForward;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
