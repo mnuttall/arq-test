@@ -28,13 +28,13 @@
         <dependency>
             <groupId>org.arquillian.cube</groupId>
             <artifactId>arquillian-cube-requirement</artifactId>
-            <version>1.7.1</version>
+            <version>1.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.arquillian.cube</groupId>
             <artifactId>arquillian-cube-kubernetes</artifactId>
-            <version>1.7.1</version>
+            <version>1.8.0</version>
             <scope>test</scope>
         </dependency>
 
