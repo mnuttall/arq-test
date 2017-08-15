@@ -1,4 +1,4 @@
 apiVersion: v1
-description: A Helm chart for Kubernetes
-name: chart
+description: A Helm chart for arq-test
+name: arq-test
 version: 0.1.0
