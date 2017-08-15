@@ -34,7 +34,7 @@ public class ArqIT {
     */
 
     @Named("hello-service")
-    // does it work without this? @PortForward
+    @PortForward
     @ArquillianResource
     URL url;
 
