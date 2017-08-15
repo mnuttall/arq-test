@@ -89,10 +89,12 @@
                         <env.config.resource.name>server.json</env.config.resource.name>
                         <wait.for.service.list>hello-service</wait.for.service.list>
 
-                        <!-- Use these two lines if you want to set up test environment manually 
+                        <!-- Use these two lines if you want to set up test environment manually -->
                         <env.init.enabled>false</env.init.enabled>
                         <namespace.use.existing>testns</namespace.use.existing>
-                        -->
+                        
+
+                        
                         
                     </systemPropertyVariables>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
